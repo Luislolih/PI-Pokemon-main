@@ -1,0 +1,78 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.homeContainer {
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 120px;
+}
+
+.orderButtonsContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filterSortBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    border-radius: 25px;
+    padding: 10px 20px;
+    width: 100%;
+    max-width: 600px; /* Cambiar a un valor más grande según tus necesidades */
+}
+
+.filterContainer,
+.sortContainer {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.filterLabel,
+.sortLabel {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #1e1e1e;
+}
+
+.filterSelectors,
+.sortSelectors {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+select {
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e1e1e;
+    background-color: #f5f5f5;
+    border: none;
+    cursor: pointer;
+}
+
+select:hover {
+    background-color: #e1e1e1;
+}
+
+select:focus {
+    outline: none;
+    box-shadow: 0px 0px 5px #03dac6;
+}
+
+.typeName {
+    text-transform: capitalize;
+}

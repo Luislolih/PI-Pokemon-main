@@ -1,0 +1,100 @@
+.card {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    margin: 20px;
+}
+
+.card a:link,
+.card a:visited {
+    color: black; /* Color por defecto del enlace */
+    text-decoration: none; /* Quita el subrayado del enlace */
+}
+
+.card a:hover,
+.card a:active {
+    color: black; /* Mantiene el color del enlace al hacer hover o clic */
+    text-decoration: none; /* Quita el subrayado del enlace */
+}
+
+.card:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    transition: transform 0.2s ease-in-out;
+}
+
+.cardHeader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardFooter {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.name {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.types {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.typeTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.type {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: white;
+    background-color: #1e1e1e;
+    text-transform: capitalize;
+}
+
+.image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    object-position: center;
+    margin-top: 60px;
+}
+.name,
+.typeTitle {
+    color: black !important;
+}

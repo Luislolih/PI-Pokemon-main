@@ -1,0 +1,97 @@
+.navBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    position: fixed;
+    z-index: 10;
+    background-color: #1e1e1e;
+    padding: 1em;
+    left: 0;
+    right: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 0;
+    width: 220px;
+}
+
+.logo img {
+    height: 25px;
+    flex-shrink: 0;
+    max-width: 100%;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.menu li {
+    margin: 0 10px;
+}
+
+.menu a {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+.menu a:hover {
+    color: #f5a623;
+}
+
+.menuContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: transparent;
+    height: 35px;
+    width: 220px;
+    padding: 5px;
+    flex-grow: 0;
+}
+
+.menuContainerDivider {
+    width: 2px;
+    height: 20px;
+    margin: 0 10px;
+    background-color: #ffffff;
+}
+
+.searchBarContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+
+.navBarContainer {
+    display: flex; /* Agrega display: flex */
+    align-items: center; /* Agrega align-items: center */
+    justify-content: space-between; /* Añade esta propiedad */
+    padding: 0 20px;
+}
+
+@media only screen and (max-width: 500px) {
+    .menu {
+        display: none;
+    }
+
+    .menuContainerDivider {
+        display: none;
+    }
+}
