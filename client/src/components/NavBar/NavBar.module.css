@@ -80,9 +80,9 @@
 }
 
 .navBarContainer {
-    display: flex; /* Agrega display: flex */
-    align-items: center; /* Agrega align-items: center */
-    justify-content: space-between; /* Añade esta propiedad */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0 20px;
 }
 
@@ -93,5 +93,35 @@
 
     .menuContainerDivider {
         display: none;
+    }
+}
+@media screen and (max-width: 480px) {
+    .navBar {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .logo {
+        width: 100%;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1em;
+    }
+
+    .menu li {
+        margin: 0.5em 0;
+    }
+
+    .menuContainer {
+        display: none;
+    }
+
+    .searchBarContainer {
+        flex-grow: 1;
+        margin-top: 1em;
     }
 }
