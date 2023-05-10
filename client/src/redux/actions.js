@@ -58,8 +58,12 @@ export const getPokemonName = (name) => {
 
             dispatch({ type: GET_POKEMON_NAME, payload: [apiData.data] });
         } catch (error) {
-            console.log(error);
-            // Manejar el error aquí
+            if (error.response && error.response.status === 400) {
+                throw new Error("Pokemon not found");
+            } else {
+                console.log(error);
+                // Manejar otros errores aquí si es necesario
+            }
         }
     };
 };

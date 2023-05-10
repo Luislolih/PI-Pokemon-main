@@ -7,3 +7,14 @@
     width: 300px;
     margin-right: 10px;
 }
+.errorfound {
+    color: white;
+    background-color: red;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 14px;
+    text-align: center;
+    width: fit-content;
+    margin: 0 auto;
+}

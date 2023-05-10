@@ -27,6 +27,10 @@ const Form = () => {
         type: "",
     });
 
+    const [optionSelected, setOptionSelected] = useState([]);
+
+    const [countChecked, SetCountChecked] = useState(0);
+
     const [types, setTypes] = useState([]);
 
     useEffect(() => {
@@ -35,36 +39,47 @@ const Form = () => {
             .then((data) => setTypes(data.results))
             .catch((error) => console.log(error));
     }, []);
-
     const handleTypeChange = (event) => {
-        let isChecked = event.target.checked;
+        const isChecked = event.target.checked;
         const propertyPk = event.target.name;
+        console.log(event.target.value);
+        let updatedTypes;
+        if (countChecked >= 2) {
+            event.preventDefault();
+            console.log("cancelando");
+        } else if (isChecked) {
+            setOptionSelected([...optionSelected, event.target.value]);
+            console.log(optionSelected);
+            SetCountChecked(optionSelected.length + 1);
+            console.log("countChecked if: %o", countChecked);
+        } else {
+            setOptionSelected(
+                optionSelected.filter((value) => value !== event.target.value)
+            );
+            SetCountChecked(optionSelected.length - 1);
+            console.log("countChecked else: %o", countChecked);
+        }
 
-        if (form.type.length >= 2 && isChecked) {
+        if (countChecked < 2) {
             setErrors({
                 ...errors,
-                type: "Puedes seleccionar solo hasta 2 Tipos",
+                type: "Debes seleccionar al menos 2 tipos",
             });
-            isChecked = false;
-            return;
-        }
-
-        if (!isChecked && form.type.length === 1) {
-            setErrors({ ...errors, type: "Debes seleccionar al menos 1 Tipo" });
-        }
-
-        if (isChecked && errors.type !== "") {
+        } else {
             setErrors({ ...errors, type: "" });
         }
 
-        if (isChecked) {
-            setForm({ ...form, type: [...form.type, propertyPk] });
-        } else {
-            let filteredTypes = [...form.type].filter(
-                (type) => type !== propertyPk
-            );
-            setForm({ ...form, type: filteredTypes });
-        }
+        // if (isChecked) {
+        //     if (form.type.length < 2) {
+        //         updatedTypes = [...form.type, propertyPk];
+        //     } else {
+        //         return;
+        //     }
+        // } else {
+        //     updatedTypes = form.type.filter((type) => type !== propertyPk);
+        // }
+
+        setForm({ ...form, type: updatedTypes });
     };
 
     const changeHandler = (event) => {

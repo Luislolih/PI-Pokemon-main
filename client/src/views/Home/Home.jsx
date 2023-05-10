@@ -11,17 +11,24 @@ const Home = () => {
     const pokemons = useSelector((state) => state.pokemons);
 
     const [selectedType, setSelectedType] = useState("");
-    const filteredPokemons = selectedType
-        ? pokemons.filter((pokemon) => {
-              if (selectedType === "creados") {
-                  return pokemon.hasOwnProperty("createdAt");
-              } else if (selectedType === "existentes") {
-                  return !pokemon.hasOwnProperty("createdAt");
-              } else {
-                  return pokemon.type.includes(selectedType);
-              }
-          })
-        : pokemons;
+    const [selectedOrigin, setSelectedOrigin] = useState("");
+    const filteredPokemons = pokemons
+        .filter((pokemon) => {
+            if (selectedOrigin === "creados") {
+                return pokemon.hasOwnProperty("createdAt");
+            } else if (selectedOrigin === "existentes") {
+                return !pokemon.hasOwnProperty("createdAt");
+            } else {
+                return true;
+            }
+        })
+        .filter((pokemon) => {
+            if (selectedType) {
+                return pokemon.type.includes(selectedType);
+            } else {
+                return true;
+            }
+        });
 
     useEffect(() => {
         dispatch(getPokemons());
@@ -56,8 +63,8 @@ const Home = () => {
                             ))}
                         </select>
                         <select
-                            onChange={(e) => setSelectedType(e.target.value)}
-                            value={selectedType}
+                            onChange={(e) => setSelectedOrigin(e.target.value)}
+                            value={selectedOrigin}
                         >
                             <option value="">All origins</option>
 
@@ -87,7 +94,17 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <CardsContainer pokemons={filteredPokemons} />
+            <CardsContainer
+                pokemons={
+                    selectedOrigin === ""
+                        ? filteredPokemons
+                        : filteredPokemons.filter((pokemon) =>
+                              selectedOrigin === "creados"
+                                  ? pokemon.hasOwnProperty("createdAt")
+                                  : !pokemon.hasOwnProperty("createdAt")
+                          )
+                }
+            />
         </div>
     );
 };
