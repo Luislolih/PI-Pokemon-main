@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getPokemonName, getPokemons } from "../../redux/actions";
 import style from "./SearchBar.module.css";
@@ -10,12 +10,13 @@ const SearchBar = () => {
 
     const handleSearch = async () => {
         try {
-            setErrorMessage(""); // Limpiar el mensaje de error en cada búsqueda
+            setErrorMessage("");
             await dispatch(getPokemonName(searchText));
         } catch (error) {
             setErrorMessage(error.message);
         }
     };
+
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
             handleSearch();
@@ -24,22 +25,23 @@ const SearchBar = () => {
 
     const handleKeyUp = (event) => {
         if (searchText === "") {
-            //window.location.replace("");
-            const historyData = JSON.parse(
-                sessionStorage.getItem("historyData")
-            );
-            console.log("historyData: %o", historyData);
-            dispatch({ type: "GET_POKEMONS", payload: historyData.pokemons });
-            // dispatch(historyData);
+            setErrorMessage("");
+            dispatch(getPokemons());
         }
     };
+
+    useEffect(() => {
+        if (searchText === "") {
+            setErrorMessage("");
+        }
+    }, [searchText]);
 
     return (
         <div className={style.searchBar}>
             <input
                 className={style.searchInput}
                 type="text"
-                placeholder="Buscar Pokémon..."
+                placeholder="Search Pokemon..."
                 value={searchText}
                 onChange={(event) => setSearchText(event.target.value)}
                 onKeyPress={handleKeyPress}

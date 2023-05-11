@@ -28,7 +28,7 @@ body {
     border-radius: 25px;
     padding: 10px 20px;
     width: 100%;
-    max-width: 600px; /* Cambiar a un valor más grande según tus necesidades */
+    max-width: 600px;
 }
 
 .filterContainer,
@@ -75,4 +75,39 @@ select:focus {
 
 .typeName {
     text-transform: capitalize;
+}
+@media screen and (max-width: 480px) {
+    .container {
+        padding-top: 80px;
+        padding-bottom: 40px;
+    }
+
+    .navigation {
+        margin-bottom: 10px;
+    }
+
+    .navigation-item {
+        font-size: 14px;
+    }
+
+    .filterSortBar {
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+
+    .filterContainer,
+    .sortContainer {
+        margin-bottom: 10px;
+    }
+
+    .filterLabel,
+    .sortLabel {
+        font-size: 14px;
+        margin-right: 5px;
+    }
+
+    select {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 }

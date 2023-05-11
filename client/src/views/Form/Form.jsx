@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
+import FormNotification from "../../components/FormNotification/FormNotification";
 import axios from "axios";
 import style from "./Form.module.css";
 
 const Form = () => {
+    const [submitState, setSubmitState] = useState(true);
+    const [showNotification, setShowNotification] = useState(false);
+    const [notificationStatus, setNotificationStatus] = useState({
+        text: "",
+        created: false,
+    });
     const [form, setForm] = useState({
         name: "",
         image: "",
@@ -27,6 +34,36 @@ const Form = () => {
         type: "",
     });
 
+    const checkFormValidity = () => {
+        const {
+            name,
+            image,
+            hp,
+            attack,
+            defense,
+            speed,
+            height,
+            weight,
+            type,
+        } = form;
+
+        return (
+            name.trim() !== "" &&
+            image.trim() !== "" &&
+            hp.trim() !== "" &&
+            attack.trim() !== "" &&
+            defense.trim() !== "" &&
+            speed.trim() !== "" &&
+            height.trim() !== "" &&
+            weight.trim() !== "" &&
+            type.length >= 2
+        );
+    };
+
+    useEffect(() => {
+        setSubmitState(!checkFormValidity());
+    }, [form]);
+
     const [optionSelected, setOptionSelected] = useState([]);
 
     const [countChecked, SetCountChecked] = useState(0);
@@ -42,45 +79,63 @@ const Form = () => {
     const handleTypeChange = (event) => {
         const isChecked = event.target.checked;
         const propertyPk = event.target.name;
-        console.log(event.target.value);
-        let updatedTypes;
+        console.log(event.target);
+
         if (countChecked >= 2) {
-            event.preventDefault();
-            console.log("cancelando");
-        } else if (isChecked) {
+            if (isChecked) {
+                event.preventDefault();
+                event.target.checked = false;
+                return;
+            }
+
+            console.log("submitState: %o", submitState);
+        }
+
+        let Checkeds = [];
+        let countCheckeds = 0;
+
+        if (isChecked) {
+            console.log("submitState: %o", submitState);
             setOptionSelected([...optionSelected, event.target.value]);
             console.log(optionSelected);
             SetCountChecked(optionSelected.length + 1);
-            console.log("countChecked if: %o", countChecked);
+
+            Checkeds = [...optionSelected, event.target.value];
+            countCheckeds = Checkeds.length;
+
+            console.log("Checkeds !! : %o", Checkeds);
+            console.log("countCheckeds !! : %o", countCheckeds);
         } else {
-            setOptionSelected(
-                optionSelected.filter((value) => value !== event.target.value)
+            Checkeds = optionSelected.filter(
+                (value) => value !== event.target.value
             );
-            SetCountChecked(optionSelected.length - 1);
-            console.log("countChecked else: %o", countChecked);
+            countCheckeds = Checkeds.length;
+
+            console.log("Checkeds else !! : %o", Checkeds);
+            console.log("countCheckeds else !! : %o", countCheckeds);
+
+            setOptionSelected(Checkeds);
+            SetCountChecked(countCheckeds);
         }
 
-        if (countChecked < 2) {
+        // agregamos los types.
+        let formData = { ...form, type: Checkeds };
+
+        setForm(formData);
+
+        if (countCheckeds < 2) {
             setErrors({
                 ...errors,
-                type: "Debes seleccionar al menos 2 tipos",
+                type: "You must select at least 2 types",
             });
         } else {
             setErrors({ ...errors, type: "" });
         }
-
-        // if (isChecked) {
-        //     if (form.type.length < 2) {
-        //         updatedTypes = [...form.type, propertyPk];
-        //     } else {
-        //         return;
-        //     }
-        // } else {
-        //     updatedTypes = form.type.filter((type) => type !== propertyPk);
-        // }
-
-        setForm({ ...form, type: updatedTypes });
     };
+
+    useEffect(() => {
+        setSubmitState(!checkFormValidity());
+    }, [form, optionSelected]);
 
     const changeHandler = (event) => {
         const property = event.target.name;
@@ -105,141 +160,189 @@ const Form = () => {
         }
 
         setForm({ ...form, [property]: value });
+
+        //validateForm(form);
     };
 
     // VALIDATE:
 
     const validateName = (form) => {
-        if (/^[a-z]+$/.test(form.name)) {
+        let hasError = false;
+        if (/^[a-zA-Z]+$/.test(form.name)) {
             setErrors({ ...errors, name: "" });
         } else {
             setErrors({
                 ...errors,
-                name: "El nombre no puede contener mayúsculas, números ni carácteres especiales",
+                name: "Name cannot contain numbers, spaces, or special characters",
             });
+            hasError = true;
         }
 
-        if (form.name === "")
-            setErrors({ ...errors, name: `Tu Pokémon necesita un nombre` });
+        if (form.name === "") {
+            setErrors({ ...errors, name: `Your Pokemon needs a name` });
+            hasError = true;
+        }
+
+        return hasError;
     };
 
     const validateImage = (form) => {
+        let hasError = false;
         if (/\.png$|\.jpg$/.test(form.image)) {
             setErrors({ ...errors, image: "" });
         } else {
             setErrors({
                 ...errors,
-                image: "La URL de la imagen debe terminar en .png o .jpg",
+                image: "Image URL must end in .png or .jpg",
             });
+            hasError = true;
         }
 
-        if (form.image === "")
+        if (form.image === "") {
             setErrors({
                 ...errors,
-                image: `Necesitas agregar una imagen para tu Pokémon`,
+                image: `You need to add an image for your Pokemon`,
             });
+            hasError = true;
+        }
+
+        return hasError;
     };
 
     const validateHp = (form) => {
+        let hasError = false;
         if (form.hp <= 255) {
             setErrors({ ...errors, hp: "" });
         } else {
             setErrors({
                 ...errors,
-                hp: "El Pokémon puede tener como máximo 255 de HP",
+                hp: "The Pokemon can have a maximum of 255 HP",
             });
+            hasError = true;
         }
 
-        if (form.hp === "")
+        if (form.hp === "") {
             setErrors({
                 ...errors,
-                hp: `El campo "Vida" no puede estar vacío`,
+                hp: `The "Life" field cannot be empty`,
             });
+            hasError = true;
+        }
+        return hasError;
     };
 
     const validateAttack = (form) => {
+        let hasError = false;
         if (form.attack <= 190) {
             setErrors({ ...errors, attack: "" });
         } else {
             setErrors({
                 ...errors,
-                attack: "El Pokémon puede tener como máximo 190 de Ataque",
+                attack: "The Pokemon can have a maximum of 190 Attack",
             });
+            hasError = true;
         }
 
-        if (form.attack === "")
+        if (form.attack === "") {
             setErrors({
                 ...errors,
-                attack: `El campo "Ataque" no puede estar vacío`,
+                attack: `The "Attack" field cannot be empty`,
             });
+            hasError = true;
+        }
+
+        return hasError;
     };
 
     const validateDefense = (form) => {
+        let hasError = false;
         if (form.defense <= 230) {
             setErrors({ ...errors, defense: "" });
         } else {
             setErrors({
                 ...errors,
-                defense: "El Pokémon puede tener como máximo 230 de Defensa",
+                defense: "The Pokemon can have a maximum of 230 Defense",
             });
+            hasError = true;
         }
 
-        if (form.defense === "")
+        if (form.defense === "") {
             setErrors({
                 ...errors,
-                defense: `El campo "Defensa" no puede estar vacío`,
+                defense: `The "Defense" field cannot be empty`,
             });
+            hasError = true;
+        }
+
+        return hasError;
     };
 
     const validateSpeed = (form) => {
+        let hasError = false;
         if (form.speed <= 180) {
             setErrors({ ...errors, speed: "" });
         } else {
             setErrors({
                 ...errors,
-                speed: "El Pokémon puede tener como máximo 180 de Velocidad",
+                speed: "The Pokemon can have a maximum of 180 Speed",
             });
+            hasError = true;
         }
 
-        if (form.speed === "")
+        if (form.speed === "") {
             setErrors({
                 ...errors,
-                speed: `El campo "Velocidad" no puede estar vacío`,
+                speed: `The "Speed" field cannot be empty`,
             });
+            hasError = true;
+        }
+
+        return hasError;
     };
 
     const validateHeight = (form) => {
-        if (form.height <= 14.5) {
+        let hasError = false;
+        if (form.height <= 14) {
             setErrors({ ...errors, height: "" });
         } else {
             setErrors({
                 ...errors,
-                height: "El Pokémon puede medir como máximo 14.5 m.",
+                height: "The Pokemon can measure a maximum of 14 m.",
             });
+            hasError = true;
         }
 
-        if (form.height === "")
+        if (form.height === "") {
             setErrors({
                 ...errors,
-                height: `El campo "Altura" no puede estar vacío`,
+                height: `The "Height" field cannot be empty`,
             });
+            hasError = true;
+        }
+        return hasError;
     };
 
     const validateWeight = (form) => {
-        if (form.weight <= 999.9) {
+        let hasError = false;
+        if (form.weight <= 999) {
             setErrors({ ...errors, weight: "" });
         } else {
             setErrors({
                 ...errors,
-                weight: "El Pokémon puede pesar como máximo 999.9 KG.",
+                weight: "The Pokemon can weigh a maximum of 999 KG.",
             });
+            hasError = true;
         }
 
-        if (form.weight === "")
+        if (form.weight === "") {
             setErrors({
                 ...errors,
-                weight: `El campo "Peso" no puede estar vacío`,
+                weight: `The "Weight" field cannot be empty`,
             });
+            hasError = true;
+        }
+
+        return hasError;
     };
 
     //ENVIAR FORM:
@@ -247,18 +350,58 @@ const Form = () => {
         event.preventDefault();
         axios
             .post("http://localhost:3001/pokemons", form)
-            .then((res) => alert(res));
+            .then((res) => {
+                setNotificationStatus({
+                    text: "Pokemon created successfully",
+                    created: true,
+                });
+                setShowNotification(true);
+                setTimeout(() => {
+                    setShowNotification(false);
+                }, 5000);
+            })
+            .catch((error) => {
+                if (
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.error
+                ) {
+                    const errorMessage = error.response.data.error;
+                    if (
+                        errorMessage ===
+                            "The Pokemon already exists in the database" ||
+                        errorMessage === "The Pokemon already exists in the API"
+                    ) {
+                        setNotificationStatus({
+                            text: "The Pokemon already exists",
+                            created: false,
+                        });
+                    } else {
+                        setNotificationStatus({
+                            text: "Pokemon not created",
+                            created: false,
+                        });
+                    }
+                } else {
+                    setNotificationStatus({
+                        text: "Pokemon not created",
+                        created: false,
+                    });
+                }
+                setShowNotification(true);
+                setTimeout(() => {
+                    setShowNotification(false);
+                }, 5000);
+            });
     };
 
     console.log(form);
 
-    ///RETURN:
-
     return (
         <form className={style["form-container"]} onSubmit={submitHandler}>
-            <h2 className={style["title"]}>Crea tu Pokémon!</h2>
+            <h2 className={style["title"]}>Create your Pokemon!</h2>
             <div>
-                <label className={style["label"]}>Nombre: </label>
+                <label className={style["label"]}>Name: </label>
                 <input
                     className={style["input"]}
                     type="text"
@@ -270,9 +413,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.name}</span>
                 )}
             </div>
-
             <div>
-                <label className={style["label"]}>Imagen URL: </label>
+                <label className={style["label"]}>URL Image: </label>
                 <input
                     className={style["input"]}
                     type="text"
@@ -284,9 +426,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.image}</span>
                 )}
             </div>
-
             <div>
-                <label className={style["label"]}>Vida: </label>
+                <label className={style["label"]}>HP: </label>
                 <input
                     className={style["input"]}
                     type="number"
@@ -299,9 +440,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.hp}</span>
                 )}
             </div>
-
             <div>
-                <label className={style["label"]}>Ataque: </label>
+                <label className={style["label"]}>Attack: </label>
                 <input
                     className={style["input"]}
                     type="number"
@@ -314,9 +454,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.attack}</span>
                 )}
             </div>
-
             <div>
-                <label className={style["label"]}>Defensa: </label>
+                <label className={style["label"]}>Defense: </label>
                 <input
                     className={style["input"]}
                     type="number"
@@ -329,9 +468,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.defense}</span>
                 )}
             </div>
-
             <div>
-                <label className={style["label"]}>Velocidad: </label>
+                <label className={style["label"]}>Speed: </label>
                 <input
                     className={style["input"]}
                     type="number"
@@ -344,9 +482,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.speed}</span>
                 )}
             </div>
-
             <div>
-                <label className={style["label"]}>Altura: </label>
+                <label className={style["label"]}>Height: </label>
                 <input
                     className={style["input"]}
                     type="number"
@@ -359,9 +496,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.height}</span>
                 )}
             </div>
-
             <div>
-                <label className={style["label"]}>Peso: </label>
+                <label className={style["label"]}>Weight: </label>
                 <input
                     className={style["input"]}
                     type="number"
@@ -374,11 +510,8 @@ const Form = () => {
                     <span className={style["error"]}>{errors.weight}</span>
                 )}
             </div>
-
             <fieldset>
-                <legend className={style["tipos-title"]}>
-                    Tipo de Pokemon:
-                </legend>
+                <legend className={style["tipos-title"]}>Pokemon Type:</legend>
                 {types.map((type) => (
                     <div className={style["tipo"]} key={type.name}>
                         <input
@@ -396,10 +529,20 @@ const Form = () => {
                     <span className={style["error"]}>{errors.type}</span>
                 )}
             </fieldset>
-
-            <button className={style["button-submit"]} type="submit">
-                CREAR
+            <button
+                type="submit"
+                disabled={submitState}
+                className={`${
+                    submitState
+                        ? style["button-disabled"]
+                        : style["button-submit"]
+                }`}
+            >
+                CREATE
             </button>
+            {showNotification && (
+                <FormNotification notificationStatus={notificationStatus} />
+            )}
         </form>
     );
 };

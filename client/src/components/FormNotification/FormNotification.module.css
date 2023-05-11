@@ -1,0 +1,44 @@
+.message {
+    background-color: rgba(0, 0, 0, 0.493);
+    text-align: center;
+    padding: 2rem;
+    position: absolute;
+    width: 90.3%;
+    height: 96.7%;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 0.7rem;
+}
+.message p {
+    color: white;
+    padding: 1em;
+}
+
+.created {
+    background-color: green;
+}
+.failed {
+    background-color: red;
+}
+
+@media screen and (max-width: 480px) {
+    .message {
+        background-color: rgba(0, 0, 0, 0.493);
+        text-align: center;
+        padding: 2rem;
+        position: absolute;
+        width: 84.3%;
+        height: 96.7%;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        border-radius: 0.7rem;
+    }
+}

@@ -86,15 +86,6 @@
     padding: 0 20px;
 }
 
-@media only screen and (max-width: 500px) {
-    .menu {
-        display: none;
-    }
-
-    .menuContainerDivider {
-        display: none;
-    }
-}
 @media screen and (max-width: 480px) {
     .navBar {
         flex-direction: column;
@@ -107,17 +98,28 @@
 
     .menu {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        margin-top: 1em;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        flex-grow: 1;
+    }
+
+    .menuContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        background-color: transparent;
+        height: 35px;
+        width: 220px;
+        padding: 5px;
+        flex-grow: 0;
+        margin-left: auto;
     }
 
     .menu li {
         margin: 0.5em 0;
-    }
-
-    .menuContainer {
-        display: none;
     }
 
     .searchBarContainer {

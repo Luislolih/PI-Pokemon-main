@@ -19,7 +19,6 @@ export const getPokemons = () => {
             dispatch({ type: GET_POKEMONS, payload: pokemons });
         } catch (error) {
             console.log(error);
-            // Manejar el error aquí
         }
     };
 };
@@ -31,7 +30,6 @@ export const getTypes = () => {
             dispatch({ type: GET_TYPES, payload: apiData.data });
         } catch (error) {
             console.log(error);
-            // Manejar el error aquí
         }
     };
 };
@@ -44,7 +42,6 @@ export const getPokemon = (id) => {
             dispatch({ type: GET_POKEMON, payload: pokemon });
         } catch (error) {
             console.log(error);
-            // Manejar el error aquí
         }
     };
 };
@@ -62,7 +59,6 @@ export const getPokemonName = (name) => {
                 throw new Error("Pokemon not found");
             } else {
                 console.log(error);
-                // Manejar otros errores aquí si es necesario
             }
         }
     };

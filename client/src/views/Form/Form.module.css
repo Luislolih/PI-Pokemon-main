@@ -5,6 +5,8 @@
     border-radius: 10px;
     padding: 100px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    margin-bottom: 2rem;
 }
 .title {
     font-size: 2rem;
@@ -110,7 +112,18 @@
 .tipo label:hover:before {
     border-color: #ff6f61;
 }
-
+.button-disabled {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: #de7b74;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
 .button-submit {
     display: block;
     width: 100%;
@@ -139,44 +152,35 @@
     line-height: 1;
 }
 
-/* Estilos para dispositivos móviles */
 @media screen and (max-width: 480px) {
-    /* Cambiar el padding del contenedor del formulario */
     .form-container {
         padding: 80px;
     }
 
-    /* Reducir el tamaño del título */
     .title {
         font-size: 1.5rem;
     }
 
-    /* Reducir el tamaño de la fuente del input */
     .input {
         font-size: 1rem;
     }
 
-    /* Reducir el tamaño de la fuente del label */
     .label {
         font-size: 16px;
     }
 
-    /* Reducir el tamaño de la fuente del título de los tipos */
     .tipos-title {
         font-size: 16px;
     }
 
-    /* Reducir el tamaño de la fuente del tipo */
     .tipo {
         font-size: 0.9rem;
     }
 
-    /* Cambiar el margen superior del botón */
     .button-submit {
         margin-top: 10px;
     }
 
-    /* Reducir el tamaño de la fuente del mensaje de error */
     .error {
         font-size: 0.9rem;
     }

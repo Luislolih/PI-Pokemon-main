@@ -24,7 +24,7 @@ const rootReducer = (state = initialState, action) => {
                 numPage: state.numPage + 1,
                 type: NEXT_PAGE,
             };
-            // sessionStorage.setItem("historyData", JSON.stringify(historyData));
+
             return {
                 ...state,
                 numPage: state.numPage + 1,
@@ -35,7 +35,7 @@ const rootReducer = (state = initialState, action) => {
                 numPage: state.numPage - 1,
                 type: PREV_PAGE,
             };
-            // sessionStorage.setItem("historyData", JSON.stringify(historyData));
+
             return {
                 ...state,
                 numPage: state.numPage - 1,
@@ -46,7 +46,7 @@ const rootReducer = (state = initialState, action) => {
                 numPage: action.payload,
                 type: SET_PAGE,
             };
-            // sessionStorage.setItem("historyData", JSON.stringify(historyData));
+
             return {
                 ...state,
                 numPage: action.payload,

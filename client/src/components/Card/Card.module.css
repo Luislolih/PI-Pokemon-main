@@ -11,14 +11,14 @@
 
 .card a:link,
 .card a:visited {
-    color: black; /* Color por defecto del enlace */
-    text-decoration: none; /* Quita el subrayado del enlace */
+    color: black;
+    text-decoration: none;
 }
 
 .card a:hover,
 .card a:active {
-    color: black; /* Mantiene el color del enlace al hacer hover o clic */
-    text-decoration: none; /* Quita el subrayado del enlace */
+    color: black;
+    text-decoration: none;
 }
 
 .card:hover {
